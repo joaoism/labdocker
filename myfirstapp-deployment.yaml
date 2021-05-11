@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: labgke
+  labels:
+    app: myapp
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: redis
+        image: redis
+        ports:
+        - name: redis-port      
+          containerPort: 6379
+      - name: myapp       
+        image: gcr.io/ismael-gks-turma04/myfirstapp:2.1
+        env:
+        - name: MESSAGE
+          value: "desistir e para os fracos, o ideal e nem tentar by ismael"
+        - name: REDIS_HOST
+          value: "localhost"
+        ports:
+        - name: http-port        
+          containerPort: 80
